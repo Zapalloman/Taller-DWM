@@ -1,0 +1,493 @@
+/* ===================================
+   ESTILOS CSS PARA PÁGINA DE BÚSQUEDA
+   US-02 - Craft & Beer
+   Demostración de Box Model y Flexbox
+   =================================== */
+
+/* ===== VARIABLES CSS ===== */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #d4a574;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+    --border-color: #dee2e6;
+    --hover-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+/* ===== ESTILOS GENERALES ===== */
+
+/* Box model para navbar brand */
+.navbar-brand {
+    font-weight: bold;
+    color: var(--secondary-color) !important;
+    margin-right: 2rem; /* Margen externo derecho */
+    padding: 0.5rem 1rem; /* Padding interno */
+    border: 2px solid transparent; /* Borde invisible por defecto */
+    transition: var(--transition);
+}
+
+.navbar-brand:hover {
+    border-color: var(--secondary-color); /* Borde visible al hover */
+    border-radius: 5px;
+}
+
+/* Flexbox para el contenido principal */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 120px); /* Altura mínima considerando navbar y footer */
+    padding: 2rem 0; /* Padding vertical */
+}
+
+/* ===== ESTILOS DEL HEADER DE BÚSQUEDA ===== */
+
+.search-header {
+    margin-bottom: 2rem; /* Margen inferior */
+    padding: 1rem 0; /* Padding vertical */
+}
+
+/* Box model para el contenedor de la barra de búsqueda */
+.search-bar-container {
+    margin: 0 auto; /* Centrado horizontal */
+    padding: 1rem; /* Padding interno */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: var(--light-color); /* Fondo sutil */
+    border: 1px solid var(--border-color); /* Borde sutil */
+    box-shadow: var(--hover-shadow); /* Sombra suave */
+}
+
+.search-form .input-group {
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Oculta desbordamiento para bordes limpios */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-form .form-control {
+    border: none; /* Sin borde para integración limpia */
+    padding: 0.75rem 1rem; /* Padding interno generoso */
+    font-size: 1.1rem; /* Texto más grande para legibilidad */
+}
+
+.search-form .input-group-text {
+    background-color: white; /* Fondo blanco */
+    border: none; /* Sin borde */
+    padding: 0.75rem 1rem; /* Mismo padding que el input */
+}
+
+.search-form .btn {
+    padding: 0.75rem 1.5rem; /* Padding interno del botón */
+    border: none; /* Sin borde */
+    font-weight: 600; /* Texto semi-bold */
+}
+
+/* ===== ESTILOS DEL LAYOUT PRINCIPAL ===== */
+
+.search-layout {
+    flex: 1; /* Ocupa espacio disponible en el flexbox padre */
+    margin-bottom: 2rem; /* Margen inferior */
+}
+
+/* ===== ESTILOS DE LA SIDEBAR DE FILTROS ===== */
+
+.filters-sidebar {
+    background-color: var(--light-color); /* Fondo claro */
+    border: 1px solid var(--border-color); /* Borde sutil */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 1.5rem; /* Padding interno */
+    margin-bottom: 2rem; /* Margen inferior para móviles */
+    height: fit-content; /* Altura ajustada al contenido */
+    position: sticky; /* Posición sticky para escritorio */
+    top: 100px; /* Offset desde el top (considerando navbar) */
+}
+
+/* Box model para el header de filtros */
+.filters-header {
+    margin-bottom: 2rem; /* Margen inferior */
+    padding-bottom: 1rem; /* Padding inferior */
+    border-bottom: 1px solid var(--border-color); /* Línea separadora */
+}
+
+.filters-header h3 {
+    margin-bottom: 1rem; /* Margen inferior */
+    color: var(--dark-color); /* Color del texto */
+}
+
+/* Estilos para grupos de filtros */
+.filter-group {
+    margin-bottom: 2rem; /* Margen entre grupos */
+    padding-bottom: 1.5rem; /* Padding inferior */
+    border-bottom: 1px solid #e9ecef; /* Línea separadora sutil */
+}
+
+.filter-group:last-of-type {
+    border-bottom: none; /* Sin línea en el último grupo */
+    margin-bottom: 1rem; /* Menos margen en el último */
+}
+
+.filter-group h4 {
+    margin-bottom: 1rem; /* Margen inferior del título */
+    color: var(--dark-color); /* Color del texto */
+}
+
+/* Box model para opciones de filtro */
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Espacio entre opciones */
+}
+
+.form-check {
+    padding: 0.5rem 0; /* Padding vertical */
+    margin: 0; /* Sin margen por defecto */
+    border-radius: 4px; /* Bordes ligeramente redondeados */
+    transition: var(--transition);
+}
+
+.form-check:hover {
+    background-color: rgba(13, 110, 253, 0.1); /* Fondo sutil al hover */
+    padding-left: 0.5rem; /* Desplazamiento visual */
+}
+
+.form-check-input {
+    margin-right: 0.75rem; /* Margen entre checkbox y label */
+}
+
+.form-check-label {
+    cursor: pointer; /* Cursor pointer para mejor UX */
+    font-weight: 500; /* Texto semi-bold */
+    color: var(--dark-color); /* Color del texto */
+}
+
+/* Estilos para acciones de filtros */
+.filters-actions {
+    margin-top: 2rem; /* Margen superior */
+    padding-top: 1.5rem; /* Padding superior */
+    border-top: 2px solid var(--border-color); /* Línea separadora superior */
+}
+
+.filters-actions .btn {
+    padding: 0.75rem 1.5rem; /* Padding interno del botón */
+    font-weight: 600; /* Texto semi-bold */
+    border-radius: 6px; /* Bordes redondeados */
+    transition: var(--transition);
+}
+
+/* ===== ESTILOS DEL ÁREA DE RESULTADOS ===== */
+
+.search-results {
+    padding: 0; /* Sin padding adicional */
+}
+
+/* Box model para header de resultados */
+.results-header {
+    margin-bottom: 2rem; /* Margen inferior */
+    padding: 1rem; /* Padding interno */
+    background-color: var(--light-color); /* Fondo claro */
+    border: 1px solid var(--border-color); /* Borde sutil */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+.results-header h2 {
+    margin-bottom: 0.5rem; /* Margen inferior del título */
+    color: var(--dark-color); /* Color del texto */
+}
+
+/* Estilos para dropdown de ordenamiento */
+.sort-dropdown select {
+    padding: 0.5rem 1rem; /* Padding interno */
+    border: 1px solid var(--border-color); /* Borde sutil */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: white; /* Fondo blanco */
+    min-width: 200px; /* Ancho mínimo */
+}
+
+/* ===== ESTILOS PARA CARDS DE PRODUCTOS ===== */
+
+/* Box model para las cards de productos */
+.product-card {
+    margin-bottom: 1.5rem; /* Margen inferior */
+    padding: 0; /* Sin padding adicional (lo maneja Bootstrap) */
+    border: 1px solid var(--border-color); /* Borde sutil */
+    border-radius: 10px; /* Bordes redondeados */
+    transition: var(--transition);
+    height: 100%; /* Altura completa del contenedor padre */
+    display: flex;
+    flex-direction: column; /* Flexbox columna para distribuir contenido */
+    overflow: hidden; /* Oculta desbordamiento */
+}
+
+.product-card:hover {
+    border-color: var(--secondary-color); /* Cambio de borde al hover */
+    box-shadow: var(--hover-shadow); /* Sombra al hover */
+    transform: translateY(-3px); /* Elevación sutil */
+}
+
+/* Flexbox para el contenido de la card */
+.product-card .card-body {
+    flex: 1; /* Ocupa espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye contenido uniformemente */
+    padding: 1.25rem; /* Padding interno */
+}
+
+/* Placeholder para imágenes con box model */
+.image-placeholder {
+    height: 220px; /* Altura fija */
+    background-color: var(--light-color); /* Fondo claro */
+    border-bottom: 1px solid var(--border-color); /* Línea separadora inferior */
+    margin: 0; /* Sin margen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d; /* Color del texto placeholder */
+    font-weight: 500; /* Texto semi-bold */
+}
+
+/* Estilos para badges de tipo */
+.badge {
+    font-size: 0.75rem; /* Tamaño de texto pequeño */
+    font-weight: 600; /* Texto semi-bold */
+    padding: 0.375rem 0.75rem; /* Padding interno */
+    border-radius: 20px; /* Bordes muy redondeados */
+}
+
+/* ===== ESTILOS RESPONSIVOS ===== */
+
+/* Tablet y pantallas medianas */
+@media (max-width: 991.98px) {
+    .filters-sidebar {
+        position: relative; /* No sticky en pantallas pequeñas */
+        top: auto; /* Reset del offset */
+        margin-bottom: 2rem; /* Margen inferior */
+    }
+    
+    .main-content {
+        padding: 1rem 0; /* Menos padding en tablets */
+    }
+    
+    .search-bar-container {
+        padding: 0.75rem; /* Menos padding */
+        margin-bottom: 1rem; /* Margen inferior */
+    }
+}
+
+/* Móviles */
+@media (max-width: 767.98px) {
+    .search-header h1 {
+        font-size: 2rem; /* Título más pequeño */
+        margin-bottom: 1.5rem; /* Menos margen */
+    }
+    
+    .search-bar-container {
+        padding: 0.5rem; /* Padding mínimo */
+        margin: 0 -0.5rem 1rem; /* Ajuste de márgenes */
+    }
+    
+    .filters-sidebar {
+        padding: 1rem; /* Menos padding */
+        border-radius: 8px; /* Bordes menos redondeados */
+    }
+    
+    .filter-group {
+        margin-bottom: 1.5rem; /* Menos margen entre grupos */
+        padding-bottom: 1rem; /* Menos padding */
+    }
+    
+    .product-card {
+        margin-bottom: 1rem; /* Menos margen en móviles */
+    }
+    
+    .image-placeholder {
+        height: 180px; /* Altura reducida para móviles */
+    }
+    
+    .results-header {
+        padding: 0.75rem; /* Menos padding */
+    }
+    
+    .results-header .d-flex {
+        flex-direction: column; /* Stack vertical en móviles */
+        gap: 1rem; /* Espacio entre elementos */
+    }
+    
+    .sort-dropdown select {
+        min-width: 100%; /* Ancho completo en móviles */
+    }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 575.98px) {
+    .search-form .input-group {
+        flex-direction: column; /* Stack vertical en móviles muy pequeños */
+    }
+    
+    .search-form .btn {
+        border-radius: 0 0 8px 8px; /* Bordes redondeados solo abajo */
+    }
+    
+    .search-form .form-control {
+        border-radius: 8px 8px 0 0; /* Bordes redondeados solo arriba */
+    }
+    
+    .search-form .input-group-text {
+        border-radius: 0; /* Sin bordes redondeados */
+        border-bottom: 1px solid var(--border-color); /* Línea separadora */
+    }
+}
+
+/* ===== ESTILOS PARA IMPRESIÓN ===== */
+@media print {
+    /* Configuración general de página */
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+    
+    /* Ocultar elementos no necesarios para impresión */
+    .navbar,
+    footer,
+    .filters-sidebar,
+    .pagination,
+    .search-header,
+    .results-header .sort-dropdown {
+        display: none !important;
+    }
+    
+    /* Configuración general */
+    body {
+        font-size: 11pt;
+        line-height: 1.3;
+        color: #000 !important;
+        background: white !important;
+    }
+    
+    .container-fluid {
+        max-width: none !important;
+        padding: 0 !important;
+    }
+    
+    /* Título de resultados */
+    .results-header h2 {
+        font-size: 18pt !important;
+        margin-bottom: 10mm !important;
+        text-align: center;
+    }
+    
+    /* Grid optimizado para impresión - 2 columnas */
+    .results-grid .col-xl-4 {
+        width: 50% !important;
+        float: left;
+        padding: 0 5px !important;
+    }
+    
+    /* Cards optimizadas para impresión */
+    .product-card {
+        page-break-inside: avoid;
+        margin-bottom: 8mm !important;
+        padding: 0 !important;
+        border: 1px solid #333 !important;
+        border-radius: 3px !important;
+        background: white !important;
+        box-shadow: none !important;
+        transform: none !important;
+        height: auto !important;
+    }
+    
+    .card-body {
+        padding: 8px !important;
+    }
+    
+    .card-title {
+        font-size: 12pt !important;
+        font-weight: bold !important;
+        margin-bottom: 4px !important;
+    }
+    
+    .card-text {
+        font-size: 9pt !important;
+        margin-bottom: 3px !important;
+    }
+    
+    .image-placeholder {
+        height: 60px !important;
+        margin: 0 !important;
+        border-bottom: 1px solid #666 !important;
+        background: #f0f0f0 !important;
+        font-size: 8pt !important;
+    }
+    
+    .badge {
+        background: #ddd !important;
+        color: #333 !important;
+        border: 1px solid #999 !important;
+    }
+    
+    .btn {
+        background: none !important;
+        border: 1px solid #333 !important;
+        color: #000 !important;
+        padding: 2px 6px !important;
+        font-size: 8pt !important;
+    }
+    
+    .h5.text-primary {
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+}
+
+/* ===== ESTILOS DE ACCESIBILIDAD ===== */
+
+/* Focus para navegación por teclado */
+.form-check-input:focus,
+.form-control:focus,
+.btn:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    border-color: var(--primary-color);
+}
+
+/* Mejora de contraste para texto */
+.text-muted {
+    color: #6c757d !important; /* Asegura contraste suficiente */
+}
+
+/* Estados hover mejorados */
+.btn:hover,
+.form-check:hover .form-check-label {
+    transition: var(--transition);
+}
+
+/* ===== ANIMACIONES SUAVES ===== */
+
+/* Animación de entrada para las cards */
+.product-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación para el hover de los filtros */
+.form-check:hover {
+    animation: slideRight 0.2s ease-out;
+}
+
+@keyframes slideRight {
+    from {
+        padding-left: 0;
+    }
+    to {
+        padding-left: 0.5rem;
+    }
+}

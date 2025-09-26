@@ -1,0 +1,329 @@
+/* =================================================================
+   CRAFT & BEER - ESTILOS PERSONALIZADOS PARA CATÁLOGO
+   Demostrando Box Model, Flexbox y diseño responsive
+   ================================================================= */
+
+/* VARIABLES CSS PARA CONSISTENCIA */
+:root {
+    --primary-color: #1f4788;
+    --secondary-color: #f39c12;
+    --success-color: #27ae60;
+    --dark-color: #2c3e50;
+    --light-gray: #f8f9fa;
+    --medium-gray: #6c757d;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+/* RESET Y BOX MODEL BÁSICO */
+* {
+    box-sizing: border-box; /* Box model: incluye padding y border en el width */
+}
+
+/* ESTILOS GLOBALES DEL BODY */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0; /* Box model: eliminar márgenes por defecto */
+    padding: 0; /* Box model: eliminar padding por defecto */
+    background-color: var(--light-gray);
+}
+
+/* MAIN CONTENT: Ajuste por navbar fijo */
+.main-content {
+    padding-top: 80px; /* Box model: padding superior para compensar navbar fixed */
+    min-height: calc(100vh - 160px); /* Altura mínima considerando navbar y footer */
+}
+
+/* HERO SECTION: Sección principal del título */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 60px 0; /* Box model: padding vertical generoso */
+    margin-bottom: 40px; /* Box model: margen inferior */
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.hero-section h1 {
+    margin-bottom: 20px; /* Box model: margen inferior específico */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* FILTERS SECTION: Flexbox para filtros */
+.filters-section {
+    margin-bottom: 40px; /* Box model: separación inferior */
+}
+
+.filter-bar {
+    /* Flexbox: distribución flexible de botones */
+    display: flex;
+    flex-wrap: wrap; /* Flexbox: permite wrap en pantallas pequeñas */
+    justify-content: center; /* Flexbox: centrado horizontal */
+    gap: 10px; /* Flexbox: espaciado entre elementos */
+    padding: 20px; /* Box model: padding interior */
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid #e9ecef; /* Box model: borde sutil */
+}
+
+.filter-bar .btn {
+    /* Box model personalizado para botones */
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: var(--transition);
+    border: 2px solid transparent; /* Box model: borde transparente para consistencia */
+}
+
+.filter-bar .btn:hover {
+    transform: translateY(-2px); /* Efecto hover sin afectar el layout */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* SEARCH BUTTON: Lupa de búsqueda avanzada */
+.filter-bar .btn-outline-info {
+    border-color: #17a2b8; /* Color info de Bootstrap */
+    color: #17a2b8;
+}
+
+.filter-bar .btn-outline-info:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+/* Separador vertical entre filtros y lupa */
+.filter-bar .vr {
+    width: 2px;
+    background-color: #dee2e6;
+    opacity: 0.75;
+    margin: 0 8px;
+    align-self: stretch;
+}
+
+/* PRODUCTS SECTION: Grid de productos */
+.products-section {
+    margin-bottom: 60px; /* Box model: margen inferior */
+}
+
+/* PRODUCT CARDS: Diseño de tarjetas con flexbox */
+.product-card {
+    /* Box model completo para cards */
+    border: none;
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Para que border-radius funcione con imagen */
+    transition: var(--transition);
+    background: white;
+    
+    /* Flexbox para estructura interna */
+    display: flex;
+    flex-direction: column; /* Flexbox: dirección vertical */
+}
+
+.product-card:hover {
+    /* Efecto hover: transformación y sombra */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* CARD IMAGE WRAPPER: Contenedor de imagen */
+.card-img-wrapper {
+    /* Box model: dimensiones fijas para consistencia */
+    height: 200px;
+    background: var(--light-gray);
+    border-bottom: 1px solid #e9ecef;
+    
+    /* Flexbox: centrado perfecto del placeholder */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-img {
+    /* Flexbox para iconos y texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    color: var(--medium-gray);
+    font-size: 1.1em;
+}
+
+.placeholder-img i {
+    font-size: 2rem;
+    margin-right: 10px; /* Box model: espaciado específico */
+}
+
+/* CARD BODY: Flexbox para distribución del contenido */
+.card-body {
+    /* Flexbox: crecimiento y distribución */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Flexbox: ocupa espacio disponible */
+    padding: 20px; /* Box model: padding interno */
+    gap: 10px; /* Flexbox: espaciado entre elementos */
+}
+
+.card-title {
+    /* Box model para títulos */
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.card-text {
+    /* Box model: márgenes controlados */
+    margin-bottom: 10px;
+    flex-grow: 1; /* Flexbox: ocupa espacio disponible */
+}
+
+/* PRICE AND BUTTON CONTAINER: Flexbox para layout horizontal */
+.card-body .mt-auto > div {
+    /* Flexbox: distribución entre precio y botón */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Flexbox: empuja al final */
+    padding-top: 15px; /* Box model: separación superior */
+    border-top: 1px solid #f8f9fa; /* Box model: línea divisoria sutil */
+}
+
+/* PAGINATION SECTION: Centrado y espaciado */
+.pagination-section {
+    margin: 60px 0; /* Box model: márgenes verticales */
+}
+
+.pagination {
+    /* Flexbox override para centrado perfecto */
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.pagination .page-link {
+    /* Box model personalizado para enlaces de paginación */
+    padding: 12px 16px;
+    margin: 0 4px; /* Box model: espaciado horizontal */
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* FOOTER: Box model para pie de página */
+footer {
+    /* Box model completo */
+    margin-top: auto; /* Flexbox: empuja al final si hay flexbox parent */
+    padding: 30px 0; /* Box model: padding vertical */
+    background: var(--dark-color) !important;
+    border-top: 3px solid var(--secondary-color); /* Box model: borde superior decorativo */
+}
+
+/* =================================================================
+   MEDIA QUERIES PARA RESPONSIVE DESIGN
+   ================================================================= */
+
+/* TABLET: Ajustes para pantallas medianas */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 0; /* Box model: reducir padding en móviles */
+    }
+    
+    .hero-section h1 {
+        font-size: 2.5rem; /* Ajuste tipográfico */
+    }
+    
+    .filter-bar {
+        /* Flexbox: ajustes para móvil */
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .card-img-wrapper {
+        height: 180px; /* Box model: altura reducida en tablet */
+    }
+}
+
+/* MÓVIL: Optimización para pantallas pequeñas */
+@media (max-width: 576px) {
+    .main-content {
+        padding-top: 70px; /* Box model: reducir padding superior */
+    }
+    
+    .hero-section {
+        padding: 30px 15px; /* Box model: padding más compacto */
+        margin-bottom: 30px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 15px; /* Box model: padding reducido en móvil */
+    }
+    
+    .card-img-wrapper {
+        height: 160px; /* Box model: altura más pequeña en móvil */
+    }
+    
+    /* Flexbox: botones de productos en móvil */
+    .card-body .mt-auto > div {
+        flex-direction: column; /* Flexbox: cambio a vertical en móvil */
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .pagination .page-link {
+        padding: 8px 12px; /* Box model: padding reducido */
+        margin: 0 2px;
+    }
+}
+
+/* =================================================================
+   UTILIDADES ADICIONALES PARA BOX MODEL Y FLEXBOX
+   ================================================================= */
+
+/* Utility classes para demostrar conceptos */
+.box-model-demo {
+    /* Demostración completa del box model */
+    margin: 20px;           /* Espacio exterior */
+    border: 2px solid #000; /* Borde */
+    padding: 15px;          /* Espacio interior */
+    background-color: #f0f0f0; /* Color de fondo */
+    /* width + padding + border + margin = espacio total ocupado */
+}
+
+.flex-demo {
+    /* Demostración de flexbox */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Clases de ayuda para debugging */
+.debug-border {
+    border: 2px dashed red !important;
+}
+
+.debug-margin {
+    margin: 10px !important;
+    background-color: rgba(255, 0, 0, 0.1) !important;
+}

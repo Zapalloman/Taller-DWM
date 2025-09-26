@@ -1,0 +1,141 @@
+<!doctype html>
+<!--
+  Archivo: detalle.html
+  Propósito: SKELETON de la página de detalle de una cerveza.
+  Instrucciones: estructura HTML5, Bootstrap 5 CDN, navbar, breadcrumb, main centrado,
+  uso de Grid y Flexbox, placeholders visibles y comentarios explicativos.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle Cerveza — [NOMBRE CERVEZA]</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Enlace a estilos locales (box model, flexbox ejemplos) -->
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <!-- NAVBAR: navegación superior simple con logo y links básicos -->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container">
+          <!-- Logo/Marca -->
+          <a class="navbar-brand fw-bold" href="#">Craft & Beer</a>
+
+          <!-- Botón hamburguesa para pantalla pequeña -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Links de navegación (colapsables) -->
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- BREADCRUMB: navegación secundaria que muestra la jerarquía -->
+    <nav aria-label="breadcrumb" class="bg-white border-bottom">
+      <div class="container py-2">
+        <!-- Breadcrumb usando componentes de Bootstrap -->
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="#">Catálogo</a></li>
+          <li class="breadcrumb-item active" aria-current="page">[NOMBRE CERVEZA]</li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- MAIN: contenedor principal centrado. Diseño de una sola columna -->
+    <main class="container">
+      <!-- Usamos el sistema de grid de Bootstrap para centrar una columna de tamaño moderado -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+
+          <!-- Product card: demuestra box model (margen, padding, borde) y uso de flexbox para algunas partes -->
+          <section class="product-card my-4">
+            <!-- Encabezado del producto (nombre + tipo) -->
+            <!-- [TEXTO] placeholder para nombre y tipo -->
+            <header class="mb-3 text-center">
+              <h1 class="h3 mb-1">[NOMBRE CERVEZA]</h1>
+              <p class="text-muted mb-0">[TIPO DE CERVEZA]</p>
+            </header>
+
+            <!-- Imagen grande del producto (columna única, centrada) -->
+            <!-- Placeholder visible: varias pantallas se adaptan gracias a img-fluid y al contenedor responsive -->
+            <div class="mb-3 text-center">
+              <!-- [IMAGEN] -->
+              <img src="#" alt="[IMAGEN] [NOMBRE CERVEZA]" class="product-image img-fluid mx-auto d-block"/>
+            </div>
+
+            <!-- Información técnica y acción (precio, formato, ABV, IBU) -->
+            <!-- Usamos flexbox para alinear precio y botón en línea en pantallas grandes -->
+            <div class="info d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
+              <!-- Columna de detalles técnicos -->
+              <div class="details w-100">
+                <!-- Grid interno para pares etiqueta/valor; demostración del grid system -->
+                <div class="row gx-2 gy-2">
+                  <div class="col-6 col-sm-4"><strong>Precio:</strong></div>
+                  <div class="col-6 col-sm-8">[TEXTO] -- €</div>
+
+                  <div class="col-6 col-sm-4"><strong>Formato:</strong></div>
+                  <div class="col-6 col-sm-8">[BOTELLA / GROWLER]</div>
+
+                  <div class="col-6 col-sm-4"><strong>ABV:</strong></div>
+                  <div class="col-6 col-sm-8">[TEXTO] %</div>
+
+                  <div class="col-6 col-sm-4"><strong>IBU:</strong></div>
+                  <div class="col-6 col-sm-8">[TEXTO]</div>
+                </div>
+              </div>
+
+              <!-- Botón principal (acción) -->
+              <div class="actions d-flex align-items-center">
+                <!-- El botón es prominente; incluimos placeholder visual [BOTÓN] y el texto real solicitado -->
+                <button class="btn btn-primary btn-lg">Agregar al Carrito <!-- [BOTÓN] --></button>
+              </div>
+            </div>
+
+            <!-- Descripción extensa e ingredientes: bloque de texto (placeholder) -->
+            <article>
+              <h2 class="h6">Descripción</h2>
+              <p class="text-secondary">[TEXTO] Descripción extensa del producto. Aquí iría una descripción larga que abarque notas de cata, historia y recomendaciones de servicio.</p>
+
+              <h3 class="h6 mt-3">Ingredientes</h3>
+              <ul>
+                <li>[TEXTO] Lúpulo</li>
+                <li>[TEXTO] Malta</li>
+                <li>[TEXTO] Agua / Levadura</li>
+              </ul>
+            </article>
+
+            <!-- Notas de accesibilidad y uso del layout -->
+            <!-- Este bloque es un placeholder instructional; el contenido real se sustituirá en implementación final -->
+            <footer class="mt-4 text-muted small">
+              <!-- [TEXTO] placeholder para notas adicionales -->
+              Información adicional: [TEXTO]
+            </footer>
+          </section>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER minimal (opcional) -->
+    <footer class="bg-light border-top mt-4">
+      <div class="container py-3 text-center small text-muted">© [AÑO] Craft & Beer — Footer placeholder</div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS (Popper incluido) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

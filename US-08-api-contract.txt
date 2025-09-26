@@ -1,0 +1,188 @@
+US-08 - Gestión de inventario (Backoffice Admin)
+
+Contexto
+- Sistema: Craft & Beer (FastAPI + MongoDB)
+- Propósito: permitir a administradores gestionar el catálogo de productos (CRUD).
+
+Resumen rápido
+- Endpoints (solo admin):
+  - GET    /api/admin/productos
+  - POST   /api/admin/productos
+  - PUT    /api/admin/productos/{id}
+  - DELETE /api/admin/productos/{id}
+- Headers obligatorios: Authorization: Bearer <JWT> (token con rol `admin`)
+
+Esquema de producto (documento)
+- id: string (Mongo ObjectId)
+- nombre: string (requerido)
+- tipo: string (ej.: "IPA"|"Lager"|"Stout"|"Porter"|"Ale"|"Pilsner"|"Otro")
+- precio: number (>= 0)
+- stock: integer (>= 0)
+- activo: boolean
+- descripcion: string (opcional, max 2000 chars)
+- created_at, updated_at: ISO-8601
+
+Validaciones clave
+- nombre obligatorio; precio >= 0; stock >= 0; tipo en lista permitida
+- Todas las operaciones requieren token válido; si token válido pero sin rol admin -> 403 Forbidden
+
+Escenarios Gherkin y detalles
+
+1) Listar productos (GET)
+Scenario: Admin solicita listado de productos
+  Given admin autenticado
+  When GET /api/admin/productos?page=1&limit=20&activo=true
+  Then HTTP 200 OK con lista paginada de productos
+
+Endpoint: /api/admin/productos
+Method: GET
+Query params (opcionales): page, limit, activo, tipo
+Headers: Authorization: Bearer <JWT>
+Request body: none
+
+Response (200 OK) example:
+{
+  "page": 1,
+  "limit": 20,
+  "total": 2,
+  "productos": [
+    {
+      "id": "64f1a2b3c4d5e6f7890a1234",
+      "nombre": "IPA - Citra Dream",
+      "tipo": "IPA",
+      "precio": 4.5,
+      "stock": 120,
+      "activo": true,
+      "descripcion": "IPA cítrica con notas a mango.",
+      "created_at": "2025-08-10T10:00:00Z",
+      "updated_at": "2025-09-01T12:00:00Z"
+    }
+  ]
+}
+
+Response (401 Unauthorized): token ausente/inválido
+{
+  "error": "unauthorized",
+  "message": "Token ausente o inválido"
+}
+
+Response (403 Forbidden): usuario no es admin
+{
+  "error": "forbidden",
+  "message": "Se requiere rol 'admin' para esta operación"
+}
+
+2) Crear producto (POST)
+Scenario: Admin crea nuevo producto
+  Given admin autenticado
+  When POST /api/admin/productos con body válido
+  Then HTTP 201 Created con el producto creado
+
+Endpoint: /api/admin/productos
+Method: POST
+Headers: Content-Type: application/json, Authorization: Bearer <JWT>
+Request body example:
+{
+  "nombre": "Stout - Chocolate Night",
+  "tipo": "Stout",
+  "precio": 5.75,
+  "stock": 50,
+  "activo": true,
+  "descripcion": "Stout rica en cacao, cuerpo completo."
+}
+
+Response (201 Created) example:
+{
+  "id": "75a1b2c3d4e5f67890123456",
+  "nombre": "Stout - Chocolate Night",
+  "tipo": "Stout",
+  "precio": 5.75,
+  "stock": 50,
+  "activo": true,
+  "descripcion": "Stout rica en cacao, cuerpo completo.",
+  "created_at": "2025-09-26T15:30:00Z",
+  "updated_at": "2025-09-26T15:30:00Z"
+}
+
+Response (400 Bad Request) example (validación):
+{
+  "error": "validation_error",
+  "message": "Datos inválidos",
+  "details": {
+    "precio": "El precio debe ser un número mayor o igual a 0",
+    "nombre": "El nombre es obligatorio"
+  }
+}
+
+3) Actualizar producto (PUT)
+Scenario: Admin actualiza un producto existente
+  Given admin autenticado y producto con id válido existe
+  When PUT /api/admin/productos/{id} con body parcial o completo
+  Then HTTP 200 OK con el producto actualizado
+  Else si no existe -> 404 Not Found
+
+Endpoint: /api/admin/productos/{id}
+Method: PUT
+Headers: Content-Type: application/json, Authorization: Bearer <JWT>
+Path param: id (Mongo ObjectId)
+Request body example (actualización):
+{
+  "precio": 6.0,
+  "stock": 75,
+  "activo": false
+}
+
+Response (200 OK) example:
+{
+  "id": "75a1b2c3d4e5f67890123456",
+  "nombre": "Stout - Chocolate Night",
+  "tipo": "Stout",
+  "precio": 6.0,
+  "stock": 75,
+  "activo": false,
+  "descripcion": "Stout rica en cacao, cuerpo completo.",
+  "created_at": "2025-09-26T15:30:00Z",
+  "updated_at": "2025-09-27T09:00:00Z"
+}
+
+Response (404 Not Found) example:
+{
+  "error": "not_found",
+  "message": "Producto con id '75a1b2...' no encontrado"
+}
+
+4) Eliminar producto (DELETE)
+Scenario: Admin elimina un producto
+  Given admin autenticado y producto existe
+  When DELETE /api/admin/productos/{id}
+  Then HTTP 204 No Content (o 200 con mensaje) indicando eliminación
+
+Endpoint: /api/admin/productos/{id}
+Method: DELETE
+Headers: Authorization: Bearer <JWT>
+Path param: id
+
+Response (204 No Content): (sin body)
+
+Response (404 Not Found) example:
+{
+  "error": "not_found",
+  "message": "Producto con id '75a1b2...' no encontrado"
+}
+
+Notas de implementación (concisas)
+- Autenticación: JWT + verificación de claim `role` == 'admin'.
+- Persistencia: colección `productos` en MongoDB; aplicar validaciones a nivel de API y esquema.
+- Índices: indexar `tipo`, `activo` y `nombre` para búsquedas.
+- Concurrencia: al actualizar stock usar operaciones atómicas (p.ej. $inc) cuando aplique.
+- Seguridad: validar y sanitizar campos (descripcion) para evitar inyección.
+
+HTTP codes usados (resumen)
+- 200 OK — GET/PUT exitosos
+- 201 Created — POST exitoso
+- 204 No Content — DELETE exitoso
+- 400 Bad Request — validación de entrada
+- 401 Unauthorized — token ausente/inválido
+- 403 Forbidden — no es admin
+- 404 Not Found — producto no existe
+- 500 Internal Server Error — error no esperado

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Meta tags básicos para HTML5 responsive -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo de cervezas artesanales - Craft & Beer">
+    <title>Catálogo - Craft & Beer</title>
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CDN para iconos adicionales -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- HEADER: Navbar responsive con Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <!-- Logo de la marca -->
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-cup-hot me-2"></i>Craft & Beer
+            </a>
+            
+            <!-- Botón hamburguesa para dispositivos móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Menú de navegación colapsible -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">[INICIO]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">[CATÁLOGO]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../us02/busqueda.html">[BUSCAR CERVEZAS]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">[NOSOTROS]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">[CONTACTO]</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT: Container principal con padding-top por navbar fixed -->
+    <main class="container-fluid main-content">
+        
+        <!-- HERO SECTION: Título principal del catálogo -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 fw-bold text-primary mb-3">Nuestras Cervezas</h1>
+                        <p class="lead text-muted">[TEXTO DESCRIPTIVO DEL CATÁLOGO]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTROS SECTION: Área para filtros (opcional) -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="filter-bar d-flex flex-wrap justify-content-center gap-2 mb-4">
+                            <button class="btn btn-outline-primary">[FILTRO: TODAS]</button>
+                            <button class="btn btn-outline-secondary">[FILTRO: LAGER]</button>
+                            <button class="btn btn-outline-secondary">[FILTRO: ALE]</button>
+                            <button class="btn btn-outline-secondary">[FILTRO: STOUT]</button>
+                            
+                            <!-- Separador visual -->
+                            <div class="vr mx-2"></div>
+                            
+                            <!-- Lupa para búsqueda avanzada -->
+                            <a href="../us02/busqueda.html" class="btn btn-outline-info" title="Búsqueda avanzada">
+                                <i class="bi bi-search"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS GRID: Grid responsivo de productos -->
+        <!-- Grid System: 1 col móvil (col-12), 2 cols tablet (col-md-6), 4 cols desktop (col-lg-3) -->
+        <section class="products-section">
+            <div class="container">
+                <div class="row g-4">
+                    
+                    <!-- PRODUCTO 1: Card de Bootstrap -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <!-- Área de imagen del producto -->
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Cuerpo de la tarjeta -->
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                
+                                <!-- Precio y botón -->
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 2: Repetir estructura -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 3 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 4 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 5 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 6 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 7 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTO 8 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            <div class="card-img-wrapper">
+                                <div class="placeholder-img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted"></i>
+                                    <span class="text-muted ms-2">[IMAGEN]</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">[NOMBRE CERVEZA]</h5>
+                                <p class="card-text text-muted small mb-2">[TIPO DE CERVEZA]</p>
+                                <p class="card-text flex-grow-1">[DESCRIPCIÓN BREVE]</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-success mb-0">$[PRECIO]</span>
+                                        <button class="btn btn-primary btn-sm">[VER DETALLES]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGINATION: Sistema de paginación -->
+        <section class="pagination-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="Navegación del catálogo">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Anterior">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Siguiente">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER: Pie de página simple -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2025 Craft & Beer. [TODOS LOS DERECHOS RESERVADOS]</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle con Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

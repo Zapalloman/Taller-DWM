@@ -1,0 +1,573 @@
+/* ===================================
+   ESTILOS PERSONALIZADOS PARA US06 - REGISTRO NUEVO USUARIO
+   Demostrando Box Model, Flexbox y diseño responsivo
+   =================================== */
+
+/* ===================================
+   VARIABLES CSS PERSONALIZADAS
+   =================================== */
+:root {
+    --primary-color: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+    --muted-text: #6c757d;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* ===================================
+   RESET Y ESTILOS GENERALES
+   =================================== */
+* {
+    box-sizing: border-box; /* Box model: incluye padding y border en el width/height */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, var(--light-bg) 0%, #e3f2fd 100%);
+    /* Flexbox para layout de página completa */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ===================================
+   Z-INDEX GLOBAL PARA DROPDOWNS Y MODALS
+   =================================== */
+.dropdown-menu {
+    z-index: 10000 !important;
+    position: absolute !important;
+    transform: translate3d(0, 0, 0) !important;
+}
+
+.dropdown-toggle {
+    z-index: 1000 !important;
+    position: relative !important;
+}
+
+.dropdown.show {
+    z-index: 1000 !important;
+    position: relative !important;
+}
+
+.dropdown {
+    z-index: 1000 !important;
+    position: relative !important;
+}
+
+.modal,
+.modal-backdrop,
+.tooltip,
+.popover {
+    z-index: 10050 !important;
+}
+
+/* Asegurar que containers no interfieran */
+.container,
+.container-fluid,
+.row,
+.col,
+.card,
+.navbar {
+    position: relative;
+    z-index: auto;
+}
+
+/* ===================================
+   HEADER Y NAVBAR
+   =================================== */
+.navbar {
+    /* Box model: padding interno para el navbar */
+    padding: 1rem 0;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 100;
+}
+
+/* Asegurar que el dropdown del navbar aparezca encima */
+.navbar .dropdown-menu {
+    z-index: 10100 !important;
+}
+
+.navbar-brand {
+    /* Box model: márgenes y padding para el logo */
+    margin-right: 2rem;
+    padding: 0.5rem 0;
+    transition: var(--transition);
+}
+
+.navbar-brand:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link {
+    /* Box model: padding para los enlaces */
+    padding: 0.75rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* ===================================
+   MAIN CONTAINER - FLEXBOX LAYOUT
+   =================================== */
+main {
+    /* Flexbox: crecimiento para ocupar espacio disponible */
+    flex: 1;
+    /* Flexbox: centrado vertical y horizontal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Box model: padding para espaciado */
+    padding: 2rem 1rem;
+}
+
+/* ===================================
+   CARD DE REGISTRO
+   =================================== */
+.card {
+    /* Box model: bordes redondeados y sombra */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: var(--transition);
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    /* Box model: padding personalizado */
+    padding: 2rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+    pointer-events: none;
+}
+
+.card-body {
+    /* Box model: padding generoso */
+    padding: 2.5rem 2rem 2rem;
+}
+
+/* ===================================
+   FORMULARIO Y CAMPOS
+   =================================== */
+.form-label {
+    /* Box model: margen inferior */
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--dark-text);
+}
+
+.form-control {
+    /* Box model: padding, bordes y border-radius */
+    padding: 0.875rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #fafafa;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    background-color: white;
+    transform: translateY(-1px);
+}
+
+.form-control.is-valid {
+    border-color: var(--success-color);
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+/* ===================================
+   INPUT GROUP STYLING
+   =================================== */
+.input-group-text {
+    /* Box model: padding y borders */
+    padding: 0.875rem 1rem;
+    border: 2px solid #e9ecef;
+    background-color: var(--light-bg);
+    color: var(--muted-text);
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group .form-control:focus + .input-group-text,
+.input-group .form-control:focus {
+    border-color: var(--primary-color);
+}
+
+/* ===================================
+   VALIDACIÓN DE CONTRASEÑA
+   =================================== */
+.password-requirements {
+    /* Box model: padding y margin */
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background-color: rgba(248, 249, 250, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.requirement-item {
+    /* Flexbox: alineación de elementos */
+    display: flex;
+    align-items: center;
+    /* Box model: margen entre items */
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    transition: var(--transition);
+}
+
+.requirement-item.valid .requirement-icon {
+    color: var(--success-color) !important;
+}
+
+.requirement-item.valid .requirement-icon::before {
+    content: "\F26A"; /* bi-check-circle-fill */
+}
+
+.requirement-text {
+    /* Box model: margen izquierdo */
+    margin-left: 0.5rem;
+    color: var(--muted-text);
+}
+
+.requirement-item.valid .requirement-text {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+/* ===================================
+   CHECKBOX PERSONALIZADO
+   =================================== */
+.form-check {
+    /* Box model: padding y margin */
+    padding: 1rem;
+    margin: 0;
+    background-color: rgba(248, 249, 250, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+}
+
+.form-check:hover {
+    background-color: rgba(248, 249, 250, 0.8);
+}
+
+.form-check-input {
+    /* Box model: márgenes personalizados */
+    margin-top: 0.25rem;
+    margin-right: 0.75rem;
+    transform: scale(1.2);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* ===================================
+   BOTONES
+   =================================== */
+.btn {
+    /* Box model: padding y border-radius */
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #0a58ca 100%);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-secondary {
+    /* Box model: bordes y padding */
+    border: 2px solid #e9ecef;
+    padding: 0.875rem 1rem;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--light-bg);
+    border-color: var(--muted-text);
+    transform: none;
+}
+
+/* ===================================
+   FEATURES SECTION (DEBAJO DEL FORMULARIO)
+   =================================== */
+.feature-item {
+    /* Flexbox: centrado de contenido */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* Box model: padding */
+    padding: 1rem;
+    transition: var(--transition);
+}
+
+.feature-item:hover {
+    transform: translateY(-3px);
+}
+
+.feature-item i {
+    /* Box model: margen inferior */
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* ===================================
+   FOOTER
+   =================================== */
+footer {
+    /* Box model: padding y margin superior automático */
+    padding: 2rem 0;
+    margin-top: auto;
+    background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-links a {
+    /* Box model: padding y margin */
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.social-links a:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* ===================================
+   RESPONSIVE DESIGN - MEDIA QUERIES
+   =================================== */
+
+/* Tablets (768px y menores) */
+@media (max-width: 768px) {
+    .card-body {
+        /* Box model: reducir padding en móvil */
+        padding: 1.5rem 1rem;
+    }
+    
+    .card-header {
+        padding: 1.5rem 1rem;
+    }
+    
+    main {
+        /* Box model: reducir padding lateral */
+        padding: 1rem 0.5rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+    
+    .btn {
+        /* Box model: padding más pequeño en móvil */
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature-item {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Móviles pequeños (480px y menores) */
+@media (max-width: 480px) {
+    .card {
+        /* Box model: márgenes laterales en móvil */
+        margin: 0 0.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem 0.75rem;
+    }
+    
+    .card-header {
+        padding: 1rem;
+    }
+    
+    .card-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-control {
+        /* Box model: padding reducido */
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .input-group-text {
+        padding: 0.75rem;
+    }
+    
+    .password-requirements {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .requirement-item {
+        font-size: 0.8rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* ===================================
+   ANIMACIONES Y TRANSICIONES
+   =================================== */
+@keyframes slideInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card {
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.card-header {
+    animation: slideInFromTop 0.8s ease-out;
+}
+
+/* ===================================
+   ESTADOS DE HOVER Y FOCUS MEJORADOS
+   =================================== */
+*:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* ===================================
+   UTILIDADES PERSONALIZADAS
+   =================================== */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-custom {
+    box-shadow: var(--box-shadow);
+}
+
+.border-radius-custom {
+    border-radius: var(--border-radius);
+}
+
+/* ===================================
+   COMENTARIOS SOBRE BOX MODEL Y FLEXBOX
+   
+   Box Model aplicado en este CSS:
+   - Todos los elementos usan box-sizing: border-box
+   - Padding y margins consistentes usando rem
+   - Borders con bordes redondeados personalizados
+   - Box-shadow para profundidad visual
+   
+   Flexbox aplicado en:
+   - body: flex-direction column para layout vertical
+   - main: align-items center para centrado vertical
+   - .feature-item: flex-direction column para iconos apilados
+   - .requirement-item: flex para alinear iconos con texto
+   - .social-links: flex para alinear iconos sociales
+   
+   Grid System de Bootstrap usado en:
+   - Estructura responsive del formulario
+   - Layout de features debajo del formulario
+   - Footer con contenido alineado
+   =================================== */

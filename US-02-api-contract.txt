@@ -1,0 +1,276 @@
+US-02 - Filtrar y buscar cervezas
+
+Resumen técnico breve
+- Sistema: Craft & Beer (FastAPI + MongoDB)
+- Historia: US-02 permitir a usuarios filtrar y buscar cervezas desde el catálogo.
+- Endpoint principal: GET /api/cervezas
+- Parámetros soportados (query): tipo, search, page, per_page
+- Requisito adicional: los filtros deben persistir al navegar entre páginas
+- Campos de cada cerveza: id, nombre, tipo, precio, imagen_url, formato, disponible
+
+Contrato API (lenguaje claro y técnico)
+
+Escenario 1) Filtrar por tipo (IPA, Stout, Lager)
+
+Gherkin (resumen)
+- Dado que existen cervezas etiquetadas con distintos tipos en la base de datos
+- Cuando el cliente solicita GET /api/cervezas?tipo=IPA
+- Entonces el servidor responde 200 con la lista de cervezas cuyo campo "tipo" coincide con "IPA" y metadatos de paginación
+
+Endpoint
+- URL: /api/cervezas
+- Método: GET
+- Headers obligatorios: Accept: application/json
+
+Parámetros (query)
+- tipo: string, opcional. Valores permitidos (case-insensitive): "IPA", "Stout", "Lager", "Pilsner", "Amber Ale", etc.
+  - Comportamiento: filtrado por igualdad (case-insensitive). Soportar múltiples valores con coma: tipo=IPA,Stout (implementación opcional).
+- page: integer, opcional, >=1, por defecto 1.
+- per_page: integer, opcional, >=1, <=50, por defecto 12.
+
+Body request
+- No aplica (GET).
+
+Responses
+- 200 OK
+  - Content-Type: application/json
+  - Esquema:
+    {
+      "data": [ {Beer}, ... ],
+      "pagination": { "page": <int>, "per_page": <int>, "totalPages": <int>, "totalItems": <int>, "hasNext": <bool>, "hasPrev": <bool> },
+      "appliedFilters": { "tipo": "IPA" }
+    }
+  - Ejemplo realista (solo 2 items devueltos):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "data": [
+      {
+        "id": "650b2a1f4c3e2a6b9d0f2b01",
+        "nombre": "Lupulina IPA",
+        "tipo": "IPA",
+        "precio": 4.20,
+        "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg",
+        "formato": "330ml",
+        "disponible": true
+      },
+      {
+        "id": "650b2a2a4c3e2a6b9d0f2b02",
+        "nombre": "Cítrica IPA",
+        "tipo": "IPA",
+        "precio": 4.50,
+        "imagen_url": "https://cdn.craftandbeer.local/images/citrica-ipa-330.jpg",
+        "formato": "330ml",
+        "disponible": true
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "per_page": 12,
+      "totalPages": 1,
+      "totalItems": 2,
+      "hasNext": false,
+      "hasPrev": false
+    },
+    "appliedFilters": { "tipo": "IPA" }
+  }
+
+- 400 Bad Request
+  - Causa: valor inválido en parámetro (p.ej. per_page > 50, page < 1, tipo con caracteres inválidos)
+  - Esquema:
+    {
+      "error": { "code": 400, "message": "Parámetro(s) inválido(s)", "details": [ {"param":"per_page","message":"must be integer between 1 and 50"} ] }
+    }
+  - Ejemplo:
+
+  HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+
+  {
+    "error": {
+      "code": 400,
+      "message": "Parámetro(s) inválido(s)",
+      "details": [ { "param": "tipo", "message": "unsupported type value: 'XYZ'" } ]
+    }
+  }
+
+- 404 Not Found
+  - Causa: página solicitada fuera de rango (page > totalPages). Política: devolver 404 cuando la página solicitada no existe.
+  - Ejemplo:
+
+  HTTP/1.1 404 Not Found
+  Content-Type: application/json
+
+  {
+    "error": {
+      "code": 404,
+      "message": "Página no encontrada para los filtros aplicados",
+      "details": { "requestedPage": 3, "totalPages": 1, "appliedFilters": { "tipo": "Stout" } }
+    }
+  }
+
+- 500 Internal Server Error
+  - Causa: error interno (DB, timeout). Respuesta genérica:
+    { "error": { "code": 500, "message": "Error interno del servidor" } }
+
+Notas de implementación
+- El servidor debe devolver en "appliedFilters" los filtros usados para que el cliente pueda persistir estado entre páginas.
+- El campo "tipo" debe compararse case-insensitive y normalizarse (trim).
+- Validar que "tipo" pertenezca a la lista de tipos soportados; si no, devolver 400 con detalle.
+
+
+Escenario 2) Buscar por texto en nombre
+
+Gherkin (resumen)
+- Dado que existen cervezas con nombres diversos
+- Cuando el cliente solicita GET /api/cervezas?search=lup
+- Entonces el servidor responde 200 con cervezas cuyo nombre contenga "lup" (case-insensitive, substring) y paginación
+
+Endpoint y parámetros
+- URL: /api/cervezas
+- Método: GET
+- Query params:
+  - search: string, opcional. Búsqueda por substring en campo "nombre" (case-insensitive, diacríticos ignorados si es posible).
+  - page, per_page: como en Escenario 1.
+
+Body request
+- No aplica.
+
+Responses
+- 200 OK
+  - Esquema igual al anterior, con "appliedFilters": { "search": "lup" }
+  - Ejemplo:
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "data": [
+      { "id": "650b2b334c3e2a6b9d0f2b10", "nombre": "Lupulina IPA", "tipo": "IPA", "precio": 4.20, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg", "formato": "330ml", "disponible": true },
+      { "id": "650b2b3e4c3e2a6b9d0f2b11", "nombre": "Lúpulo Dorado", "tipo": "Lager", "precio": 3.60, "imagen_url": "https://cdn.craftandbeer.local/images/lupulo-dorado-500.jpg", "formato": "500ml", "disponible": true }
+    ],
+    "pagination": { "page": 1, "per_page": 12, "totalPages": 1, "totalItems": 2, "hasNext": false, "hasPrev": false },
+    "appliedFilters": { "search": "lup" }
+  }
+
+- 400 Bad Request
+  - Causa: search vacío o demasiado largo (> 256 chars) -> 400
+
+- 500 Internal Server Error
+  - Igual que antes
+
+Notas de implementación
+- Utilizar índice text o regex eficiente en MongoDB (p. ej. un índice en nombre con collation adecuada) para búsquedas.
+- Normalización: realizar búsqueda case-insensitive y preferir collation para manejar acentos si la base lo permite.
+
+
+Escenario 3) Combinar filtros y persistencia (ejemplo: tipo=IPA + search=lup, navegar a página 2)
+
+Gherkin (resumen)
+- Dado que hay más de per_page resultados que cumplen tipo=IPA y nombre contiene "lup"
+- Cuando el cliente solicita GET /api/cervezas?tipo=IPA&search=lup&page=2&per_page=12
+- Entonces el servidor responde 200 con los items de la página 2 aplicando ambos filtros y devuelve metadatos que incluyen los filtros aplicados
+
+Endpoint y parámetros
+- URL: /api/cervezas
+- Método: GET
+- Query params: tipo, search, page, per_page
+
+Body request
+- No aplica.
+
+Responses
+- 200 OK (ejemplo: totalItems = 30, per_page = 12 => totalPages = 3)
+  - Ejemplo (página 2):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "data": [
+      { "id": "650b2c1e4c3e2a6b9d0f2b20", "nombre": "Lupulina IPA - Lata", "tipo": "IPA", "precio": 4.10, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-lata-330.jpg", "formato": "330ml", "disponible": true },
+      { "id": "650b2c2a4c3e2a6b9d0f2b21", "nombre": "Lupulina IPA - Barril", "tipo": "IPA", "precio": 48.00, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-keg.jpg", "formato": "5L", "disponible": true }
+      /* ...hasta per_page items... */
+    ],
+    "pagination": {
+      "page": 2,
+      "per_page": 12,
+      "totalPages": 3,
+      "totalItems": 30,
+      "hasNext": true,
+      "hasPrev": true
+    },
+    "appliedFilters": { "tipo": "IPA", "search": "lup" },
+    "links": {
+      "self": "/api/cervezas?tipo=IPA&search=lup&page=2&per_page=12",
+      "next": "/api/cervezas?tipo=IPA&search=lup&page=3&per_page=12",
+      "prev": "/api/cervezas?tipo=IPA&search=lup&page=1&per_page=12"
+    }
+  }
+
+- 400 Bad Request
+  - Igual que antes si algún parámetro inválido.
+
+- 404 Not Found
+  - Si page > totalPages; devolver 404 con detalles incluyendo "appliedFilters" para que el cliente pueda entender el contexto.
+
+Requerimiento: persistencia de filtros
+- Definición: cuando el cliente solicita páginas sucesivas debe recibir resultados correspondientes a los mismos filtros. Esto se implementa de dos maneras (ambas recomendadas):
+  1) El servidor incluye en la respuesta `appliedFilters` (objeto con los parámetros efectivos) y `links` (URLs con query string que contienen los filtros) para que el cliente pueda navegar manteniendo estado.
+  2) Si la aplicación usa stateful sessions, la sesión puede almacenar filtros; sin embargo, para APIs RESTful preferir approach stateless 1).
+
+Validaciones y edge cases
+- Parámetros combinados que reducen resultados a cero: devolver 200 con data: [] y pagination.totalItems = 0, totalPages = 0.
+- Si page > totalPages tras aplicar filtros: devolver 404 (como política del sistema) con details {requestedPage, totalPages, appliedFilters}.
+- `per_page` con valor > 50 -> 400
+- `search` > 256 chars -> 400
+- `tipo` valores múltiples: si se soporta lista, validar y aplicar. Si alguno no es válido -> 400 con detalle.
+
+Formato de los objetos Beer (consistente con US-01)
+- id: string (ObjectId, pattern '^[a-fA-F0-9]{24}$')
+- nombre: string
+- tipo: string
+- precio: number (float, dos decimales)
+- imagen_url: string (URL)
+- formato: string
+- disponible: boolean
+
+Ejemplo de error estándar (uniforme con US-01)
+- 400 Bad Request:
+  {
+    "error": {
+      "code": 400,
+      "message": "Parámetro(s) inválido(s)",
+      "details": [ { "param": "per_page", "message": "must be integer between 1 and 50" } ]
+    }
+  }
+
+- 404 Not Found (ejemplo cuando page fuera de rango):
+  {
+    "error": {
+      "code": 404,
+      "message": "Página no encontrada para los filtros aplicados",
+      "details": { "requestedPage": 5, "totalPages": 3, "appliedFilters": { "tipo": "IPA", "search": "lup" } }
+    }
+  }
+
+Notas técnicas y recomendaciones
+- Indexes: crear índice compuesto para búsquedas frecuentes, por ejemplo { tipo: 1, nombre: "text" } o índices separados según consultas.
+- Collation: usar collation sensible al idioma para búsquedas case-insensitive y normalización de acentos.
+- Limitaciones: paginación basada en offset (page) puede ser costosa en colecciones grandes; considerar cursor-based pagination para performance a escala.
+- Seguridad: parametrizar consultas para evitar inyección; validar longitudes máximas y caracteres permitidos en los filtros.
+- Cache: incluir Cache-Control y ETag cuando aplique; las URLs con query string deben ser cacheables si las respuestas son determinísticas.
+
+Contrato técnico compacto (resumen)
+- Input: GET /api/cervezas?tipo={string}&search={string}&page={int}&per_page={int}
+- Output: 200 JSON { data: [Beer], pagination: {...}, appliedFilters: {...}, links?: {...} }
+- Errores: 400 (params inválidos), 404 (page fuera de rango), 500 (error servidor)
+
+Checklist de cumplimiento
+- Título claro con número de historia: presente
+- Para cada escenario Gherkin: endpoint, método HTTP, parámetros, body request y response: presente para los 3 escenarios
+- JSON examples realistas: incluidos
+- Códigos HTTP específicos: 200, 400, 404, 500 documentados
+- Lenguaje claro y técnico: documentado en español técnico

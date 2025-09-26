@@ -1,0 +1,202 @@
+US-04 - Gestión del carrito de compras
+
+Resumen técnico breve
+- Sistema: Craft & Beer (FastAPI + MongoDB)
+- Historia: US-04 permitir a usuarios gestionar su carrito de compras
+- Requisitos: endpoints para agregar, modificar cantidad, ver y eliminar productos del carrito
+- Autenticación: todas las operaciones sobre carrito requieren usuario autenticado (token Bearer)
+- Estructura del carrito: 
+  {
+    "user_id": "string",
+    "items": [
+      {
+        "producto": { "id": "string", "nombre": "string", "precio": 3.50, "imagen_url": "string" },
+        "cantidad": 2,
+        "subtotal": 7.00
+      }
+    ],
+    "total": 7.00
+  }
+
+Contrato API (lenguaje claro y técnico)
+
+Escenario 1) Agregar producto al carrito
+
+Gherkin (resumen)
+- Dado que el usuario está autenticado y existe un producto con id X
+- Cuando el cliente hace POST /api/carrito/agregar con body { producto_id: X, cantidad: N }
+- Entonces el servidor añade el producto al carrito del usuario (o incrementa la cantidad si ya existe) y responde 201 con el carrito actualizado
+
+Endpoint
+- URL: /api/carrito/agregar
+- Método: POST
+- Headers:
+  - Authorization: Bearer <token> (obligatorio)
+  - Content-Type: application/json
+
+Body request (JSON)
+- Esquema:
+  {
+    "producto_id": "string", // ObjectId (24 hex chars)
+    "cantidad": integer >=1
+  }
+
+Validaciones
+- producto_id: formato ObjectId
+- cantidad: integer >= 1 y <= 100 (limit razonable)
+- El producto debe existir y estar disponible; si no -> 404 o 400 según el caso
+
+Responses
+- 201 Created
+  - Descripción: Producto agregado/actualizado en el carrito
+  - Content-Type: application/json
+  - Esquema: carrito completo (ver estructura arriba)
+  - Ejemplo:
+
+  HTTP/1.1 201 Created
+  Content-Type: application/json
+
+  {
+    "user_id": "650d4e2f4c3e2a6b9d0f4d11",
+    "items": [
+      {
+        "producto": { "id": "650c3d2f4c3e2a6b9d0f3c10", "nombre": "Lupulina IPA", "precio": 4.20, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg" },
+        "cantidad": 2,
+        "subtotal": 8.40
+      }
+    ],
+    "total": 8.40
+  }
+
+- 400 Bad Request
+  - Causa: cantidad inválida, cuerpo malformado
+  - Ejemplo:
+    { "error": { "code": 400, "message": "cantidad debe ser entero >= 1" } }
+
+- 401 Unauthorized
+  - Causa: token ausente o inválido
+  - Ejemplo:
+    { "error": { "code": 401, "message": "Autenticación requerida" } }
+
+- 404 Not Found
+  - Causa: producto no existe
+  - Ejemplo:
+    { "error": { "code": 404, "message": "Producto no encontrado", "details": { "producto_id": "650c3d2f4c3e2a6b9d0f3c99" } } }
+
+- 409 Conflict
+  - Causa: stock insuficiente para la cantidad solicitada
+  - Ejemplo:
+    { "error": { "code": 409, "message": "Stock insuficiente", "details": { "available": 1 } } }
+
+
+Escenario 2) Modificar cantidad
+
+Gherkin (resumen)
+- Dado que el usuario tiene un producto en su carrito
+- Cuando el cliente hace PUT /api/carrito/{producto_id} con body { cantidad: N }
+- Entonces el servidor actualiza la cantidad (o elimina si cantidad=0) y devuelve 200 con el carrito actualizado
+
+Endpoint
+- URL: /api/carrito/{producto_id}
+- Método: PUT
+- Headers: Authorization: Bearer <token>, Content-Type: application/json
+
+Path params
+- producto_id: string (ObjectId)
+
+Body request
+- Esquema:
+  { "cantidad": integer >= 0 }
+  - Regla: si cantidad == 0 -> eliminar el item del carrito
+
+Validaciones
+- cantidad >= 0 y <= 100
+- producto_id corresponde a un item en el carrito; si no existe -> 404
+
+Responses
+- 200 OK
+  - Descripción: carrito actualizado
+  - Ejemplo (cantidad modificada):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "user_id": "650d4e2f4c3e2a6b9d0f4d11",
+    "items": [
+      { "producto": { "id": "650c3d2f4c3e2a6b9d0f3c10", "nombre": "Lupulina IPA", "precio": 4.20, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg" }, "cantidad": 3, "subtotal": 12.60 }
+    ],
+    "total": 12.60
+  }
+
+- 400 Bad Request
+  - Causa: cantidad inválida
+- 401 Unauthorized
+  - Causa: token ausente/incorrecto
+- 404 Not Found
+  - Causa: item no encontrado en el carrito
+- 409 Conflict
+  - Causa: stock insuficiente
+
+
+Escenario 3) Ver contenido del carrito
+
+Gherkin (resumen)
+- Dado que el usuario está autenticado y tiene un carrito (posible vacío)
+- Cuando el cliente solicita GET /api/carrito
+- Entonces el servidor responde 200 con el carrito del usuario
+
+Endpoint
+- URL: /api/carrito
+- Método: GET
+- Headers: Authorization: Bearer <token>, Accept: application/json
+
+Query params
+- none (opcional: expand=true para incluir detalles del producto desde catalogo)
+
+Responses
+- 200 OK
+  - Descripción: carrito actual del usuario
+  - Ejemplo (carrito con 2 items):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "user_id": "650d4e2f4c3e2a6b9d0f4d11",
+    "items": [
+      { "producto": { "id": "650c3d2f4c3e2a6b9d0f3c10", "nombre": "Lupulina IPA", "precio": 4.20, "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg" }, "cantidad": 2, "subtotal": 8.40 },
+      { "producto": { "id": "650c3d5a4c3e2a6b9d0f3c11", "nombre": "Clara Pils", "precio": 3.10, "imagen_url": "https://cdn.craftandbeer.local/images/clara-pils-500.jpg" }, "cantidad": 1, "subtotal": 3.10 }
+    ],
+    "total": 11.50
+  }
+
+- 401 Unauthorized
+  - Causa: token ausente/invalid
+  - Ejemplo: { "error": { "code": 401, "message": "Autenticación requerida" } }
+
+- 500 Internal Server Error
+  - Causa: error en DB u otro
+
+
+Estructura de datos y consideraciones
+- Persistencia: carrito por usuario en colección `carts` con documento por user_id
+- Consistencia: verificar stock al modificar o al checkout (no parte de US-04)
+- Atomicidad: operaciones de incremento/decremento deben ser atómicas para evitar condiciones de carrera (usar operaciones atómicas de MongoDB)
+- Total y subtotales: calcular siempre en servidor a partir de precio actual del producto para evitar manipulaciones en el cliente
+- TTL/expiración: considerar TTL para carritos inactivos: ej. 30 días
+- Seguridad: validar que el user_id del token coincide con el carrito modificado
+
+Formato de error estándar (consistente con US-01/02/03)
+- Estructura:
+  {
+    "error": { "code": <http status>, "message": "texto", "details": null | object | array }
+  }
+
+Checklist de cumplimiento
+- Título con número de historia: presente
+- Para cada escenario Gherkin: endpoint, método HTTP, parámetros, body request y response: presente
+- JSON examples realistas: incluidos
+- Códigos HTTP específicos: 200, 201, 400, 401, 404, 409, 500 documentados
+- Lenguaje claro y técnico: cumplido
+

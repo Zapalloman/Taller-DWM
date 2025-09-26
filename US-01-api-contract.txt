@@ -1,0 +1,251 @@
+US-01 - Visualizar catálogo de cervezas
+
+
+Resumen técnico breve
+- Sistema: Craft & Beer (FastAPI + MongoDB)
+- Historia: US-01 permitir a usuarios visualizar el catálogo de cervezas.
+- Endpoint principal: GET /api/cervezas
+- Requisitos de respuesta: array de objetos cerveza + metadatos de paginación.
+- Campos de cada cerveza: id, nombre, tipo, precio, imagen_url, formato, disponible
+
+Contrato API (lenguaje técnico y preciso)
+
+1) Escenario Gherkin: Ver listado de cervezas (página principal)
+
+Gherkin (resumen)
+- Dado que existen cervezas en la base de datos
+- Cuando el cliente solicita la ruta GET /api/cervezas sin parámetros o con página 1
+- Entonces el servidor responde 200 con un array de cervezas (hasta size por página) y metadatos de paginación
+
+Endpoint
+- URL: /api/cervezas
+- Método: GET
+- Headers obligatorios: Accept: application/json
+
+Parámetros (query)
+- page: integer, opcional, >=1, por defecto 1. Página solicitada.
+- size: integer, opcional, >=1, <=50, por defecto 12. Items por página.
+- sort: string, opcional. Ejemplos: "precio:asc", "nombre:desc" (implementación optional).
+
+Body request
+- No aplica (GET). No debe enviarse body; si se envía, se ignora.
+
+Responses
+- 200 OK
+  - Descripción: Respuesta exitosa con lista (posible vacía) y metadatos de paginación.
+  - Content-Type: application/json
+  - Esquema (JSON):
+    {
+      "data": [
+        {
+          "id": "string",           // ObjectId de MongoDB en string
+          "nombre": "string",
+          "tipo": "string",         // e.g. "IPA", "Pilsner", "Stout"
+          "precio": 3.50,            // number, moneda local (ej. EUR o ARS), dos decimales
+          "imagen_url": "https://cdn.craftandbeer.local/imagenes/cerveza123.jpg",
+          "formato": "330ml",       // e.g. "330ml", "500ml", "1L"
+          "disponible": true         // boolean
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "size": 12,
+        "totalPages": 3,
+        "totalItems": 30,
+        "hasNext": true,
+        "hasPrev": false
+      }
+    }
+
+  - Ejemplo realista (respuesta con 3 cervezas):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "data": [
+      {
+        "id": "650a1f9d4c3e2a6b9d0f1a23",
+        "nombre": "Lupulina IPA",
+        "tipo": "IPA",
+        "precio": 4.20,
+        "imagen_url": "https://cdn.craftandbeer.local/images/lupulina-ipa-330.jpg",
+        "formato": "330ml",
+        "disponible": true
+      },
+      {
+        "id": "650a1fa24c3e2a6b9d0f1a24",
+        "nombre": "Nocturna Stout",
+        "tipo": "Stout",
+        "precio": 5.00,
+        "imagen_url": "https://cdn.craftandbeer.local/images/nocturna-stout-330.jpg",
+        "formato": "330ml",
+        "disponible": true
+      },
+      {
+        "id": "650a1fb14c3e2a6b9d0f1a25",
+        "nombre": "Clara Pils",
+        "tipo": "Pilsner",
+        "precio": 3.10,
+        "imagen_url": "https://cdn.craftandbeer.local/images/clara-pils-500.jpg",
+        "formato": "500ml",
+        "disponible": false
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "size": 12,
+      "totalPages": 3,
+      "totalItems": 30,
+      "hasNext": true,
+      "hasPrev": false
+    }
+  }
+
+- 400 Bad Request
+  - Causa: parámetros inválidos (p. ej. page=0, size=-1, size > 50, page no entero).
+  - Esquema:
+    {
+      "error": {
+        "code": 400,
+        "message": "Parámetro(s) de consulta inválido(s)",
+        "details": [
+          { "param": "page", "message": "must be integer >= 1" }
+        ]
+      }
+    }
+  - Ejemplo:
+
+  HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+
+  {
+    "error": {
+      "code": 400,
+      "message": "Parámetro(s) de consulta inválido(s)",
+      "details": [
+        { "param": "size", "message": "must be integer between 1 and 50" }
+      ]
+    }
+  }
+
+- 404 Not Found
+  - Causa: página solicitada fuera de rango (page > totalPages) y la política del sistema decide devolver 404 en vez de array vacío.
+  - Esquema:
+    {
+      "error": {
+        "code": 404,
+        "message": "Página no encontrada",
+        "details": { "requestedPage": 99, "totalPages": 3 }
+      }
+    }
+
+  - Ejemplo:
+
+  HTTP/1.1 404 Not Found
+  Content-Type: application/json
+
+  {
+    "error": {
+      "code": 404,
+      "message": "Página no encontrada",
+      "details": { "requestedPage": 5, "totalPages": 3 }
+    }
+  }
+
+- 500 Internal Server Error
+  - Causa: error interno (DB down, timeout). Respuesta genérica con pocos detalles.
+  - Esquema:
+    {
+      "error": { "code": 500, "message": "Error interno del servidor" }
+    }
+
+
+2) Escenario Gherkin: Navegación paginada (página 2, 12 items por página)
+
+Gherkin (resumen)
+- Dado que hay más de 12 cervezas en la base
+- Cuando el cliente solicita GET /api/cervezas?page=2&size=12
+- Entonces el servidor responde 200 con los items de la página 2 y metadatos correpondientes
+
+Endpoint
+- URL: /api/cervezas
+- Método: GET
+- Headers: Accept: application/json
+
+Parámetros (query) - ejemplo usado en escenario
+- page=2
+- size=12
+
+Body request
+- No aplica (GET).
+
+Responses
+- 200 OK (ejemplo realista, supongamos totalItems = 25 => totalPages = 3)
+  - Ejemplo (items 13..24):
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+  {
+    "data": [
+      { "id": "650a1fd24c3e2a6b9d0f1a36", "nombre": "Trigo Solar", "tipo": "Wheat", "precio": 3.30, "imagen_url": "https://cdn.craftandbeer.local/images/trigo-solar-330.jpg", "formato": "330ml", "disponible": true },
+      { "id": "650a1fdc4c3e2a6b9d0f1a37", "nombre": "Ámbar Colonial", "tipo": "Amber Ale", "precio": 4.00, "imagen_url": "https://cdn.craftandbeer.local/images/ambar-colonial-330.jpg", "formato": "330ml", "disponible": true },
+      { "id": "650a1fe74c3e2a6b9d0f1a38", "nombre": "Session IPA", "tipo": "IPA", "precio": 3.80, "imagen_url": "https://cdn.craftandbeer.local/images/session-ipa-330.jpg", "formato": "330ml", "disponible": true },
+      { "id": "650a1ff14c3e2a6b9d0f1a39", "nombre": "Sour Berry", "tipo": "Sour", "precio": 4.50, "imagen_url": "https://cdn.craftandbeer.local/images/sour-berry-330.jpg", "formato": "330ml", "disponible": false }
+      /* ...hasta 12 items en el array, este ejemplo muestra 4 por brevedad*/
+    ],
+    "pagination": {
+      "page": 2,
+      "size": 12,
+      "totalPages": 3,
+      "totalItems": 25,
+      "hasNext": true,
+      "hasPrev": true
+    }
+  }
+
+- 400 Bad Request
+  - Igual que en el escenario 1 si page o size inválidos.
+
+- 404 Not Found
+  - Si page &gt; totalPages. Ejemplo: page=10 cuando totalPages=3.
+
+Notas de diseño y consideraciones técnicas
+- Identificadores: "id" debe ser string con ObjectId (24 hex chars). En la documentación OpenAPI declarar como string con patrón "^[a-fA-F0-9]{24}$".
+- Precio: number (float) representando unidad monetaria; la conversión/formateo a moneda se hace en el cliente.
+- Filtro de disponibilidad: si se requiere, añadir query param available=true/false (no solicitado por US-01 pero recomendable).
+- Paginación: servidor calcula totalItems con un count() económico. Para grandes colecciones usar estimaciones o cursor-based pagination — para US-01 se usa paginación basada en página.
+- Seguridad/Cache: Responder con Cache-Control cuando aplique. Buen punto: permitir ETag o Last-Modified para optimizar.
+- Orden: por defecto ordenar por nombre asc. Soportar query param sort opcional.
+
+Contrato técnico compacto (contrato mínimo aceptable)
+- Input: GET /api/cervezas?page={int}&size={int}
+- Output: 200 JSON { data: [Beer], pagination: { page, size, totalPages, totalItems, hasNext, hasPrev } }
+- Error input: page/size inválidos -> 400; page fuera de rango -> 404; errores internos -> 500
+
+Ejemplos de validaciones (edge cases)
+- page = 0 -> 400
+- size = 1000 -> 400 (size &gt; 50)
+- page > totalPages -> 404
+- No hay cervezas -> 200 con data: [] y pagination.totalItems = 0, totalPages = 0 (o 1 según política). Recomendado: totalPages = 0.
+
+Formato de error estándar recomendado
+- Siempre usar la misma estructura:
+  {
+    "error": {
+      "code": <http status code>,
+      "message": "descripción breve",
+      "details": null | array | object
+    }
+  }
+
+Mapping de requisitos solicitados -> estado en este documento
+- Título claro con número de historia: incluido en la cabecera. (Done)
+- Para cada escenario Gherkin: endpoint, método HTTP, parámetros, body request y response: incluido en ambos escenarios. (Done)
+- JSON examples realistas: incluidos. (Done)
+- Códigos HTTP específicos (200, 201, 400, 404, etc.): 200, 400, 404, 500 documentados. (201 no aplica para GET)
+- Lenguaje claro y técnico: documentado en español técnico. (Done)
+
+
+
