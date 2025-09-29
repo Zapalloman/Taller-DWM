@@ -1,0 +1,51 @@
+API Contract - US07: Valoraciones y Reseñas
+
+PROPÓSITO:
+Permitir a usuarios calificar y comentar sobre las cervezas
+
+ENDPOINTS:
+
+1. Obtener valoraciones de un producto
+   - Método: GET /api/cervezas/{id}/valoraciones
+   - Parámetros: página, filtro por estrellas
+   - Respuesta: Lista de reseñas y estadísticas
+
+2. Crear nueva valoración
+   - Método: POST /api/valoraciones
+   - Datos: id_cerveza, calificación, comentario
+   - Respuesta: Valoración creada
+
+3. Editar valoración propia
+   - Método: PUT /api/valoraciones/{id}
+   - Datos: nueva calificación y comentario
+   - Respuesta: Valoración actualizada
+
+4. Eliminar valoración propia
+   - Método: DELETE /api/valoraciones/{id}
+   - Respuesta: Confirmación de eliminación
+
+5. Marcar reseña como útil
+   - Método: POST /api/valoraciones/{id}/util
+   - Respuesta: Contador actualizado
+
+DATOS DE VALORACIÓN:
+- Calificación (1-5 estrellas)
+- Comentario escrito (opcional)
+- Usuario que califica
+- Fecha de la reseña
+- Votos de utilidad
+- Verificación de compra
+
+ESTADÍSTICAS:
+- Promedio general de calificaciones
+- Distribución por estrellas
+- Número total de reseñas
+- Reseñas más útiles
+- Reseñas más recientes
+
+FUNCIONALIDADES:
+- Solo usuarios registrados pueden calificar
+- Una valoración por usuario por producto
+- Editar/eliminar valoraciones propias
+- Filtrar reseñas por calificación
+- Ordenar por fecha o utilidad

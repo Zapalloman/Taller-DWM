@@ -1,0 +1,60 @@
+API Contract - US10: Historial de Pedidos
+
+PROPÓSITO:
+Permitir a usuarios ver y gestionar su historial de compras
+
+ENDPOINTS:
+
+1. Obtener lista de pedidos
+   - Método: GET /api/usuario/pedidos
+   - Parámetros: página, filtro por estado, rango de fechas
+   - Respuesta: Lista de pedidos del usuario
+
+2. Obtener detalle de pedido específico
+   - Método: GET /api/usuario/pedidos/{id}
+   - Respuesta: Información completa del pedido
+
+3. Rastrear pedido
+   - Método: GET /api/pedidos/{id}/rastreo
+   - Respuesta: Estado actual y seguimiento
+
+4. Cancelar pedido
+   - Método: POST /api/pedidos/{id}/cancelar
+   - Respuesta: Confirmación de cancelación
+
+5. Reordenar productos
+   - Método: POST /api/pedidos/{id}/reordenar
+   - Respuesta: Productos agregados al carrito
+
+6. Descargar factura
+   - Método: GET /api/pedidos/{id}/factura
+   - Respuesta: Archivo PDF de la factura
+
+INFORMACIÓN DE PEDIDOS:
+- Número de pedido único
+- Fecha de compra
+- Estado actual (procesando, enviado, entregado)
+- Lista de productos comprados
+- Cantidades y precios
+- Dirección de envío
+- Método de pago usado
+- Total pagado
+- Información de seguimiento
+
+ESTADOS POSIBLES:
+- Pendiente de pago
+- Procesando
+- Preparando envío
+- Enviado
+- En tránsito
+- Entregado
+- Cancelado
+
+FUNCIONALIDADES:
+- Ver historial completo de compras
+- Filtrar por estado o fecha
+- Ver detalles de cada pedido
+- Rastrear envíos en tiempo real
+- Cancelar pedidos (si aplica)
+- Reordenar productos favoritos
+- Descargar facturas

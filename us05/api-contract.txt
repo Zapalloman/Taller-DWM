@@ -1,0 +1,43 @@
+API Contract - US05: Proceso de Checkout
+
+PROPÓSITO:
+Finalizar la compra con datos de envío y pago
+
+ENDPOINTS:
+
+1. Iniciar checkout
+   - Método: POST /api/checkout/iniciar
+   - Respuesta: Sesión de checkout con resumen
+
+2. Guardar datos de envío
+   - Método: POST /api/checkout/envio
+   - Datos: dirección, método de envío
+   - Respuesta: Costos de envío actualizados
+
+3. Procesar pago
+   - Método: POST /api/checkout/pago
+   - Datos: información de tarjeta, datos de facturación
+   - Respuesta: Confirmación o error de pago
+
+4. Confirmar pedido
+   - Método: POST /api/checkout/confirmar
+   - Respuesta: Número de pedido y detalles
+
+5. Métodos de envío disponibles
+   - Método: GET /api/envio/metodos
+   - Respuesta: Lista de opciones con costos
+
+DATOS REQUERIDOS:
+- Información personal (nombre, email, teléfono)
+- Dirección de envío completa
+- Método de envío preferido
+- Datos de tarjeta de crédito
+- Dirección de facturación
+
+FUNCIONALIDADES:
+- Validar datos en tiempo real
+- Calcular costos de envío automáticamente
+- Procesar pago seguro
+- Generar confirmación de pedido
+- Enviar email de confirmación
+- Limpiar carrito después de compra exitosa

@@ -1,0 +1,53 @@
+API Contract - US09: Perfil de Usuario
+
+PROPÓSITO:
+Permitir a usuarios gestionar su información personal y preferencias
+
+ENDPOINTS:
+
+1. Obtener perfil actual
+   - Método: GET /api/usuario/perfil
+   - Respuesta: Información completa del usuario
+
+2. Actualizar información personal
+   - Método: PUT /api/usuario/perfil
+   - Datos: campos a modificar
+   - Respuesta: Perfil actualizado
+
+3. Cambiar contraseña
+   - Método: POST /api/usuario/cambiar-password
+   - Datos: contraseña actual y nueva
+   - Respuesta: Confirmación de cambio
+
+4. Subir foto de perfil
+   - Método: POST /api/usuario/foto
+   - Datos: archivo de imagen
+   - Respuesta: URL de la nueva foto
+
+5. Actualizar direcciones
+   - Método: PUT /api/usuario/direcciones
+   - Datos: lista de direcciones
+   - Respuesta: Direcciones actualizadas
+
+6. Gestionar preferencias
+   - Método: PUT /api/usuario/preferencias
+   - Datos: configuraciones personales
+   - Respuesta: Preferencias guardadas
+
+INFORMACIÓN DEL PERFIL:
+- Datos personales (nombre, email, teléfono)
+- Fecha de nacimiento
+- Foto de perfil
+- Direcciones guardadas
+- Preferencias de comunicación
+- Historial de compras resumido
+- Estadísticas de usuario
+
+FUNCIONALIDADES:
+- Ver y editar información personal
+- Cambiar contraseña de forma segura
+- Gestionar múltiples direcciones
+- Configurar preferencias de email
+- Subir y cambiar foto de perfil
+- Ver estadísticas de compras
+- Eliminar cuenta (opcional)

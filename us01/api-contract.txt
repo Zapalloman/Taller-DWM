@@ -1,0 +1,28 @@
+API Contract - US01: Catálogo de Cervezas
+
+PROPÓSITO:
+Mostrar lista de cervezas disponibles en la tienda
+
+ENDPOINTS:
+
+1. Obtener todas las cervezas
+   - Método: GET /api/cervezas
+   - Parámetros opcionales:
+     * page: número de página (default: 1)
+     * limit: productos por página (default: 12)
+   - Respuesta: Lista de cervezas con información básica
+
+2. Datos de cada cerveza:
+   - ID único
+   - Nombre
+   - Tipo (IPA, Stout, Lager, etc.)
+   - Precio
+   - Imagen
+   - Stock disponible
+   - Descripción breve
+
+FUNCIONALIDADES:
+- Ver productos en formato de grilla
+- Navegación por páginas
+- Mostrar información esencial de cada producto
+- Enlace para ver detalles completos

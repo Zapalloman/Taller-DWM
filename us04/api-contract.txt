@@ -1,0 +1,45 @@
+API Contract - US04: Carrito de Compras
+
+PROPÓSITO:
+Gestionar productos en el carrito antes de comprar
+
+ENDPOINTS:
+
+1. Ver carrito actual
+   - Método: GET /api/carrito
+   - Respuesta: Lista de productos en carrito con totales
+
+2. Agregar producto
+   - Método: POST /api/carrito/items
+   - Datos: id_producto, cantidad
+   - Respuesta: Carrito actualizado
+
+3. Actualizar cantidad
+   - Método: PUT /api/carrito/items/{item_id}
+   - Datos: nueva cantidad
+   - Respuesta: Carrito actualizado
+
+4. Eliminar producto
+   - Método: DELETE /api/carrito/items/{item_id}
+   - Respuesta: Carrito actualizado
+
+5. Vaciar carrito
+   - Método: DELETE /api/carrito
+   - Respuesta: Confirmación
+
+DATOS DEL CARRITO:
+- Lista de productos con cantidades
+- Subtotal por producto
+- Subtotal general
+- Impuestos calculados
+- Costos de envío
+- Total final
+- Cantidad total de items
+
+FUNCIONALIDADES:
+- Agregar productos desde cualquier página
+- Modificar cantidades
+- Eliminar productos individuales
+- Vaciar carrito completo
+- Ver resumen de costos
+- Persistir carrito entre sesiones

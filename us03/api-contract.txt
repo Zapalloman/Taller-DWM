@@ -1,0 +1,36 @@
+API Contract - US03: Detalle de Cerveza
+
+PROPÓSITO:
+Mostrar información completa de una cerveza específica
+
+ENDPOINTS:
+
+1. Obtener detalle de cerveza
+   - Método: GET /api/cervezas/{id}
+   - Parámetros: id de la cerveza
+   - Respuesta: Información completa del producto
+
+2. Obtener productos relacionados
+   - Método: GET /api/cervezas/{id}/relacionados
+   - Respuesta: Lista de cervezas similares
+
+3. Verificar disponibilidad
+   - Método: GET /api/cervezas/{id}/stock
+   - Respuesta: Cantidad disponible en inventario
+
+DATOS COMPLETOS:
+- Información básica (nombre, precio, tipo)
+- Descripción detallada
+- Características (ABV, IBU, origen)
+- Galería de imágenes
+- Stock disponible
+- Valoraciones promedio
+- Ingredientes principales
+- Maridajes sugeridos
+
+FUNCIONALIDADES:
+- Ver toda la información del producto
+- Seleccionar cantidad
+- Agregar al carrito
+- Ver productos similares
+- Compartir producto

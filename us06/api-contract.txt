@@ -1,0 +1,49 @@
+API Contract - US06: Registro de Usuario
+
+PROPÓSITO:
+Permitir a nuevos usuarios crear una cuenta en el sistema
+
+ENDPOINTS:
+
+1. Registrar nuevo usuario
+   - Método: POST /api/usuarios/registro
+   - Datos: información personal y credenciales
+   - Respuesta: Usuario creado y token de sesión
+
+2. Verificar disponibilidad de email
+   - Método: GET /api/usuarios/verificar-email
+   - Parámetros: email a verificar
+   - Respuesta: disponible o ya en uso
+
+3. Verificar cuenta por email
+   - Método: POST /api/usuarios/verificar
+   - Datos: token de verificación
+   - Respuesta: cuenta activada
+
+4. Reenviar email de verificación
+   - Método: POST /api/usuarios/reenviar-verificacion
+   - Datos: email del usuario
+   - Respuesta: email reenviado
+
+DATOS REQUERIDOS:
+- Nombre completo
+- Email (único)
+- Teléfono
+- Contraseña (con validaciones)
+- Fecha de nacimiento
+- Dirección completa
+- Aceptación de términos y condiciones
+
+VALIDACIONES:
+- Email único en el sistema
+- Contraseña segura (mínimo 8 caracteres)
+- Teléfono válido
+- Mayor de edad (18+ años)
+- Campos obligatorios completos
+
+FUNCIONALIDADES:
+- Crear cuenta nueva
+- Validación en tiempo real
+- Verificación por email
+- Login automático después de registro
+- Redirección a página de bienvenida

@@ -1,0 +1,53 @@
+API Contract - US08: Gestión de Inventario
+
+PROPÓSITO:
+Permitir a administradores gestionar el inventario de productos
+
+ENDPOINTS:
+
+1. Listar todos los productos
+   - Método: GET /api/admin/inventario
+   - Parámetros: página, filtros, búsqueda
+   - Respuesta: Lista completa de productos con stock
+
+2. Crear nuevo producto
+   - Método: POST /api/admin/productos
+   - Datos: información completa del producto
+   - Respuesta: Producto creado
+
+3. Actualizar producto existente
+   - Método: PUT /api/admin/productos/{id}
+   - Datos: campos a modificar
+   - Respuesta: Producto actualizado
+
+4. Eliminar producto
+   - Método: DELETE /api/admin/productos/{id}
+   - Respuesta: Confirmación de eliminación
+
+5. Actualizar stock
+   - Método: PATCH /api/admin/productos/{id}/stock
+   - Datos: nueva cantidad
+   - Respuesta: Stock actualizado
+
+6. Exportar inventario
+   - Método: GET /api/admin/inventario/export
+   - Respuesta: Archivo CSV o Excel
+
+DATOS DE PRODUCTO:
+- Información básica (nombre, descripción, precio)
+- Categoría y tipo
+- Stock actual y mínimo
+- Estado (activo/inactivo)
+- Imágenes del producto
+- Características específicas
+- Proveedores
+
+FUNCIONALIDADES:
+- Ver inventario completo con filtros
+- Agregar nuevos productos
+- Editar información existente
+- Controlar niveles de stock
+- Activar/desactivar productos
+- Alertas de stock bajo
+- Exportar reportes
+- Búsqueda avanzada

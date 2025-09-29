@@ -1,0 +1,32 @@
+API Contract - US02: Búsqueda y Filtros
+
+PROPÓSITO:
+Permitir buscar y filtrar cervezas según criterios específicos
+
+ENDPOINTS:
+
+1. Buscar cervezas
+   - Método: GET /api/cervezas/search
+   - Parámetros:
+     * q: texto de búsqueda (nombre, descripción)
+     * tipo: filtro por tipo de cerveza
+     * precio_min: precio mínimo
+     * precio_max: precio máximo
+     * ordenar: criterio de ordenamiento
+     * page: número de página
+
+2. Obtener tipos disponibles
+   - Método: GET /api/tipos
+   - Respuesta: Lista de tipos de cerveza disponibles
+
+3. Filtros activos
+   - Método: GET /api/filtros
+   - Respuesta: Filtros aplicados actualmente
+
+FUNCIONALIDADES:
+- Búsqueda por texto libre
+- Filtro por tipo de cerveza
+- Filtro por rango de precio
+- Ordenamiento (precio, nombre, popularidad)
+- Limpiar filtros
+- Mantener filtros al navegar
